@@ -25,6 +25,10 @@ return array(
     "parent_menu"   => "global_menu_marketing",
     "sort"          => 2000,
     "url"           => "neft_synonyms.php?lang=".LANGUAGE_ID,
+    "more_url"      => array(
+      "neft_synonyms.php",
+      "neft_synonyms.php?edit=Y",
+    ),
     "text"          => Loc::getMessage("NEFT_SYNONYMS_MAIN_MENU_TEXT"),
     "title"         => Loc::getMessage("NEFT_SYNONYMS_MAIN_MENU_TITLE"),
     "icon"          => "neft_synonyms_admin_menu_icon",
