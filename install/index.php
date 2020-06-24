@@ -6,14 +6,14 @@
  * @copyright 2020 NEFT.digital
  */
 
-use \Bitrix\Main\Localization\Loc;
-use \Bitrix\Main\ModuleManager;
-use \Bitrix\Main\Config as Conf;
-use \Bitrix\Main\Config\Option;
-use \Bitrix\Main\Application;
-use \Bitrix\Main\Loader;
-use \Bitrix\Main\IO\Directory;
-use \Bitrix\Main\Entity\Base;
+use Bitrix\Main\Localization\Loc;
+use Bitrix\Main\ModuleManager;
+use Bitrix\Main\Config as Conf;
+use Bitrix\Main\Config\Option;
+use Bitrix\Main\Application;
+use Bitrix\Main\Loader;
+use Bitrix\Main\IO\Directory;
+use Bitrix\Main\Entity\Base;
 
 Loc::loadMessages(__FILE__);
 
@@ -69,10 +69,10 @@ class neft_synonyms extends CModule
   {
     global $APPLICATION;
     if ($this->isVersionD7()) {
+      ModuleManager::registerModule($this->MODULE_ID);
       $this->InstallDB();
       $this->InstallEvents();
       $this->InstallFiles();
-      ModuleManager::registerModule($this->MODULE_ID);
     } else {
       $APPLICATION->ThrowException(
           Loc::getMessage("NEFT_SYNONYMS_INSTALL_ERROR_VERSION")
@@ -124,11 +124,11 @@ class neft_synonyms extends CModule
    */
   public function InstallDB()
   {
-    global $APPLICATION, $DB;
-    $this->errors = false;
-    $this->errors = $DB->RunSQLBatch(__DIR__ . "/db/mysql/install.sql");
-    if (is_array($this->errors)) {
-      $APPLICATION->ThrowException(implode(' ', $this->errors));
+    Loader::includeModule($this->MODULE_ID);
+    if (!Application::getConnection(\Neft\Synonyms\SynonymsTable::getConnectionName())->isTableExists(
+        Base::getInstance("\Neft\Synonyms\SynonymsTable")->getDBTableName()
+    )) {
+      Base::getInstance("\Neft\Synonyms\SynonymsTable")->createDbTable();
     }
   }
 
@@ -140,12 +140,10 @@ class neft_synonyms extends CModule
    */
   public function UnInstallDB()
   {
-    global $APPLICATION, $DB;
-    $this->errors = false;
-    $this->errors = $DB->RunSQLBatch(__DIR__ . "/db/mysql/uninstall.sql");
-    if (is_array($this->errors)) {
-      $APPLICATION->ThrowException(implode(' ', $this->errors));
-    }
+    Loader::includeModule($this->MODULE_ID);
+    Application::getConnection(\Neft\Synonyms\SynonymsTable::getConnectionName())
+      ->queryExecute("drop table if exists " . Base::getInstance("\Neft\Synonyms\SynonymsTable")
+      ->getDBTableName());
   }
 
   public function InstallEvents()
