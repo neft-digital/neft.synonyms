@@ -1,0 +1,19 @@
+{
+  "name": "neft/synonyms",
+  "description": "Модуль Битрикс для добавления поисковых синонимов.",
+  "type": "bitrix-module",
+  "keywords": [
+    "bitrix"
+  ],
+  "authors": [
+    {
+      "name": "Alexander Balya",
+      "email": "alexander.balya@gmail.com",
+      "role": "Author"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^5.6|^7.0"
+  }
+}
