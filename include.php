@@ -1,13 +1,14 @@
 <?php
+require_once("vendor/autoload.php");
 
-// use \Bitrix\Main\Loader;
+use Bitrix\Main\Loader;
 
-// Loader::registerAutoloadClasses(
-//     "neft.synonyms",
-//     array(
-//       "Neft\\Synonyms" => "lib/synonyms.php",
-//     )
-// );
+Loader::registerAutoLoadClasses(
+    "neft.synonyms",
+    array(
+      "Neft\Synonyms" => "lib/synonyms.php",
+    )
+);
 
 
 
