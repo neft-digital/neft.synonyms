@@ -2,6 +2,7 @@
   "name": "neft/synonyms",
   "description": "Модуль Битрикс для добавления поисковых синонимов.",
   "type": "bitrix-module",
+  "homepage": "https://github.com/neft-digital/neft.synonyms",
   "keywords": [
     "bitrix"
   ],
