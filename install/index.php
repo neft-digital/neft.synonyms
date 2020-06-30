@@ -175,6 +175,12 @@ class neft_synonyms extends CModule
         true,
         true
     );
+    CopyDirFiles(
+        $this->GetPath() . "/install/components/",
+        $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/",
+        true,
+        true
+    );
     return true;
   }
 
@@ -192,6 +198,10 @@ class neft_synonyms extends CModule
     DeleteDirFiles(
         $this->GetPath() . "/install/themes/",
         $_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/"
+    );
+    DeleteDirFiles(
+        $this->GetPath() . "/install/components/",
+        $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/"
     );
     return true;
   }
