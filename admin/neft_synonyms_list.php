@@ -16,19 +16,22 @@ use Neft\Synonyms\SynonymsTable;
 use Bitrix\Main\ORM\Query\Query;
 
 $module_id = "neft.synonyms";
-
 Loader::includeModule($module_id);
+Loader::includeModule('ui');
 Loc::loadMessages(__FILE__);
 
 if ($APPLICATION->GetGroupRight($module_id) == "D") {
   $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 }
 
-// Extension::load("ui.forms");
-// Extension::load("ui.buttons");
+Extension::load("ui.buttons");
+Extension::load("ui.buttons.icons");
+Extension::load("ui.forms");
+Extension::load("ui.alerts");
+
 // CJSCore::init("sidepanel");
 
-$APPLICATION->SetAdditionalCSS('/bitrix/js/ui/buttons/icons/ui.buttons.icons.css');
+
 $APPLICATION->SetTitle(Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_TITLE"));
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
@@ -144,33 +147,11 @@ $nav->setRecordCount($result->getCount());
     <a id="" href="#" class="ui-btn ui-btn-primary ui-btn-icon-add">
       <?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_ADD") ?>
     </a>
-    <a id="" href="/bitrix/admin/search_reindex.php?lang=<?php echo LANGUAGE_ID ?>" class="ui-btn ui-btn-secondary ui-btn-icon-business">
+    <a id="" href="/bitrix/admin/search_reindex.php?lang=<?php echo LANGUAGE_ID ?>" class="ui-btn ui-btn-light-border ui-btn-icon-business">
       <?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_REINDEX") ?>
     </a>
   </div>
 </div>
-
-
-
-
-<script>
-// BX.SidePanel.Instance.open("crm:activity-view", { 
-//     contentCallback: function(slider) {
-
-//         //Callback должен вернуть промис или HTML (строка или DOM-элемент)
-//         return new Promise(function(resolve, reject) {
-//             //Эмуляция асинхронной операции. Здесь может быть ajax-запрос
-//             setTimeout(function() {  
-
-//                 //Разрешаем промис передав ему содержимое слайдера (строка или DOM-элемент)
-//                 resolve("content<br>".repeat(10));
-
-//             }, 1000);
-//         });
-//     }
-// });
-</script>
-
 
 
 
@@ -188,7 +169,11 @@ foreach ($result->fetchAll() as $row) {
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_EDIT"),
         'default' => true,
-        'onclick' => 'BX.SidePanel.Instance.open("?edit=Y&id=' . $row['ID'] . '")'
+        'onclick' => 'BX.SidePanel.Instance.open("?edit=Y&id=' . $row['ID'] . '", {
+          autoFocus: true,
+          allowChangeHistory: false,
+          requestMethod: "post"
+        })'
       ],
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_DELETE"),
