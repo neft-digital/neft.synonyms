@@ -1,9 +1,18 @@
-.neft_synonyms_admin_menu_icon {
+.neft-synonyms-admin-menu-icon {
   background-image: url("images/neft.synonyms_search.png");
   background-position: center;
 }
 
-.neft_synonyms_admin_page_icon {
+.neft-synonyms-admin-page-icon {
+}
+
+.neft-synonyms-field-caption {
+  font-size: 16px;
+  line-height: 15px;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  margin: 0 0 10px;
+  color: #80868E;
+  display: block;
 }
 
 .pagetitle-inner-container {

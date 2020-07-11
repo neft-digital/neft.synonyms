@@ -31,8 +31,8 @@ return array(
     ),
     "text"          => Loc::getMessage("NEFT_SYNONYMS_MAIN_MENU_TEXT"),
     "title"         => Loc::getMessage("NEFT_SYNONYMS_MAIN_MENU_TITLE"),
-    "icon"          => "neft_synonyms_admin_menu_icon",
-    "page_icon"     => "neft_synonyms_admin_page_icon",
+    "icon"          => "neft-synonyms-admin-menu-icon",
+    "page_icon"     => "neft-synonyms-admin-page-icon",
     "module_id"     => "neft.synonyms",
   )
 );
