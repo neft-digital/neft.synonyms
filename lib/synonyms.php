@@ -38,6 +38,12 @@ class SynonymsTable extends DataManager
         'autocomplete' => true
       )),
 
+      new BooleanField('ACTIVE', array(
+        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_ACTIVE'),
+        'values' => array('N', 'Y'),
+        'default_value' => 'Y',
+      )),
+
       new StringField('WORD', array(
         'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_WORD'),
         'required' => true,
@@ -64,10 +70,28 @@ class SynonymsTable extends DataManager
         },
       )),
 
-      new BooleanField('ACTIVE', array(
-        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_ACTIVE'),
+      new BooleanField('TRANSLIT', array(
+        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_TRANSLIT'),
         'values' => array('N', 'Y'),
-        'default_value' => 'Y',
+        'default_value' => 'N',
+      )),
+
+      new BooleanField('TYPOS', array(
+        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_TYPOS'),
+        'values' => array('N', 'Y'),
+        'default_value' => 'N',
+      )),
+
+      new BooleanField('LAYOUT', array(
+        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_LAYOUT'),
+        'values' => array('N', 'Y'),
+        'default_value' => 'N',
+      )),
+
+      new BooleanField('MORPHOLOGY', array(
+        'title' => Loc::getMessage('NEFT_SYNONYMS_DB_TITLE_MORPHOLOGY'),
+        'values' => array('N', 'Y'),
+        'default_value' => 'N',
       )),
     );
   }
