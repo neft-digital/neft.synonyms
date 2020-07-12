@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="Bitrix">
+  <description>Bitrix coding standard.</description>
+
+  <rule ref="PSR2">
+    <!-- Bitrix: даем возможность в компонентах подключать компоненты и модули вне класса -->
+    <exclude name="PSR1.Files.SideEffects" />
+
+    <!-- Отключаем проверку длины строки -->
+    <exclude name="Generic.Files.LineLength" />
+
+    <!-- Отключаем проверку стиля переноса строки \r\n -->
+    <exclude name="Generic.Files.LineEndings" />
+
+    <!-- Отключаем проверку именования методов в стиле Camel caps -->
+    <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+  </rule>
+
+  <!-- Ставим 2 пробела в табе вместо 4 -->
+  <arg name="tab-width" value="2" />
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="2"/>
+      <property name="tabIndent" value="false"/>
+    </properties>
+  </rule>
+</ruleset>

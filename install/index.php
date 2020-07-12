@@ -196,12 +196,19 @@ class neft_synonyms extends CModule
         $_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin/"
     );
     DeleteDirFiles(
-        $this->GetPath() . "/install/themes/",
-        $_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/"
+        $this->GetPath() . "/install/themes/.default/",
+        $_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/.default/"
+    );
+    DeleteDirFiles(
+        $this->GetPath() . "/install/themes/.default/images/",
+        $_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/.default/images/"
     );
     DeleteDirFiles(
         $this->GetPath() . "/install/components/",
         $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/"
+    );
+    DeleteDirFilesEx(
+        "/bitrix/components/neft/synonyms.edit"
     );
     return true;
   }

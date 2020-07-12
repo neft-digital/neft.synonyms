@@ -24,38 +24,22 @@ if ($APPLICATION->GetGroupRight($module_id) == "D") {
   $APPLICATION->AuthForm(GetMessage("ACCESS_DENIED"));
 }
 
+$APPLICATION->SetTitle(Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_TITLE"));
+
 Extension::load("ui.buttons");
 Extension::load("ui.buttons.icons");
 Extension::load("ui.forms");
 Extension::load("ui.alerts");
-
-// CJSCore::init("sidepanel");
-
-
-$APPLICATION->SetTitle(Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_TITLE"));
-
-require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
-
+Extension::load("sidepanel");
 
 // Обработка удаления
-if (isset($_REQUEST["del"]) && $_REQUEST["id"]) {
-  if ($_REQUEST["del"] === "Y") {
-    SynonymsTable::delete($_REQUEST["id"]);
+if (isset($_REQUEST["DEL"]) && $_REQUEST["ID"]) {
+  if ($_REQUEST["DEL"] === "Y") {
+    SynonymsTable::delete($_REQUEST["ID"]);
   }
 }
 
-
-
-// TODO: Убрать
-// SynonymsTable::add(array(
-//   'WORD' => substr(str_shuffle('abcdefghijklmnopqrstuvwxyz'), 0, 10),
-//   'SYNONYMS' => substr(str_shuffle('abcde fghijklmn opqrstu vwxyz abcdefghij klmnopqrs tuvwxyz abc defghijk lmnopqrstu vwxyz abcdefgh ijklmn opqrstu vwxyz abcd efghijklmnop qrstuvwx yz abcdefghij klmnopqrstu vwxyz abcdefg hijklmn opq rstuvwxyz abcdefgh ijklmnopq rstu vwxyz abcdefghi jklmnopqrst uvwxyz abcd efghijklmnopq rstuvwxyz abc defghijklm nopqrstuvwxyz abcdefghijklmnopqrstuvwxyz '), 0, 300),
-//   'ACTIVE' => 'N'
-// ));
-
-
-
-
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
 $listId = SynonymsTable::getTableName();
 
@@ -144,7 +128,7 @@ $nav->setRecordCount($result->getCount());
     ?>
   </div>
   <div class="pagetitle-container pagetitle-align-right-container">
-    <a id="" href="#" class="ui-btn ui-btn-primary ui-btn-icon-add">
+    <a onclick="BX.SidePanel.Instance.open('?EDIT=Y', {autoFocus: true, allowChangeHistory: false, requestMethod: 'post'})" href="#" class="ui-btn ui-btn-primary ui-btn-icon-add">
       <?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_ADD") ?>
     </a>
     <a id="" href="/bitrix/admin/search_reindex.php?lang=<?php echo LANGUAGE_ID ?>" class="ui-btn ui-btn-light-border ui-btn-icon-business">
@@ -169,7 +153,7 @@ foreach ($result->fetchAll() as $row) {
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_EDIT"),
         'default' => true,
-        'onclick' => 'BX.SidePanel.Instance.open("?edit=Y&id=' . $row['ID'] . '", {
+        'onclick' => 'BX.SidePanel.Instance.open("?EDIT=Y&ID=' . $row['ID'] . '", {
           autoFocus: true,
           allowChangeHistory: false,
           requestMethod: "post"
@@ -178,7 +162,7 @@ foreach ($result->fetchAll() as $row) {
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_DELETE"),
         'default' => true,
-        'onclick' => 'if(confirm("Точно?")){document.location.href="?del=Y&id=' . $row['ID'] . '"}'
+        'onclick' => 'if(confirm("Точно?")){document.location.href="?DEL=Y&ID=' . $row['ID'] . '"}'
       ]
     ]
   ];
