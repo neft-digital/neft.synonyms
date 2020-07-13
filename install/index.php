@@ -14,6 +14,7 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Loader;
 use Bitrix\Main\IO\Directory;
 use Bitrix\Main\Entity\Base;
+use Bitrix\Main\EventManager;
 
 Loc::loadMessages(__FILE__);
 
@@ -148,11 +149,25 @@ class neft_synonyms extends CModule
 
   public function InstallEvents()
   {
+    EventManager::getInstance()->registerEventHandler(
+        'search',
+        'OnAfterIndexAdd',
+        $this->MODULE_ID,
+        '\Neft\Synonyms\SearchTitleExtender',
+        'OnAfterIndexAdd'
+    );
     return true;
   }
 
   public function UnInstallEvents()
   {
+    EventManager::getInstance()->unRegisterEventHandler(
+        'search',
+        'OnAfterIndexAdd',
+        $this->MODULE_ID,
+        '\Neft\Synonyms\SearchTitleExtender',
+        'OnAfterIndexAdd'
+    );
     return true;
   }
 

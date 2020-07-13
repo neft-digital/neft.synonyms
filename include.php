@@ -6,11 +6,13 @@ use Bitrix\Main\Loader;
 Loader::registerAutoLoadClasses(
     "neft.synonyms",
     array(
-      "Neft\Synonyms" => "lib/synonyms.php",
+      "\Neft\Synonyms"                      => "lib/synonyms.php",
+      "\Neft\Synonyms\SearchTitleExtender"  => "lib/SearchTitleExtender.php",
     )
 );
 
-
+// TODO: Удалить
+// AddMessage2Log("include.php", "neft_synonyms");
 
 
 

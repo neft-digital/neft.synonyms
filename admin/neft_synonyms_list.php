@@ -14,6 +14,7 @@ use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Main\UI\Extension;
 use Neft\Synonyms\SynonymsTable;
 use Bitrix\Main\ORM\Query\Query;
+use Neft\Synonyms\SearchTitleExtender;
 
 $module_id = "neft.synonyms";
 Loader::includeModule($module_id);

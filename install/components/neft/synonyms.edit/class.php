@@ -3,11 +3,9 @@
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ErrorCollection;
 use Bitrix\Main\Context;
-use Bitrix\Main\Web\Uri;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Error;
 use Neft\Synonyms\SynonymsTable;
-use Bitrix\Main\ORM\Query\Query;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   die();
@@ -49,9 +47,7 @@ class SynonymsEditComponent extends CBitrixComponent
       );
     }
 
-
-
-    if ($this->request->isPost() && check_bitrix_sessid()) { // Если пришли данные из формы
+    if ($this->request->isPost() && check_bitrix_sessid()) {
       $data = array(
         'WORD' => trim($request->get('WORD')),
         'SYNONYMS' => trim($request->get('SYNONYMS')),
@@ -68,7 +64,6 @@ class SynonymsEditComponent extends CBitrixComponent
     $this->arResult['WORD'] = $data['WORD'];
     $this->arResult['SYNONYMS'] = $data['SYNONYMS'];
     $this->arResult['ACTIVE'] = $data['ACTIVE'];
-
 
     return true;
   }
