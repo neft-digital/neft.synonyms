@@ -3,7 +3,6 @@
   colors="true"
   backupGlobals="false"
   backupStaticAttributes="false"
-  syntaxCheck="false"
 >
   <testsuites>
     <testsuite name="Module Test Suite">
