@@ -77,15 +77,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   </div>
 
 
-  <div class="neft-form-field ui-ctl-row" style="opacity:0.2;">
+  <div class="neft-form-field ui-ctl-row">
     <div class="ui-text-1 ui-color-medium">Дополнительные параметры:</div>
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
+        id="TRANSLIT"
         name="TRANSLIT"
         type="checkbox"
         class="ui-ctl-element"
-        disabled="disabled"
+        value="Y"
         <?php echo ($arResult['TRANSLIT'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить транслит</div>
@@ -93,10 +94,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
+        id="TYPOS"
         name="TYPOS"
         type="checkbox"
         class="ui-ctl-element"
-        disabled="disabled"
+        value="Y"
         <?php echo ($arResult['TYPOS'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить опечатки</div>
@@ -104,10 +106,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
+        id="LAYOUT"
         name="LAYOUT"
         type="checkbox"
         class="ui-ctl-element"
-        disabled="disabled"
+        value="Y"
         <?php echo ($arResult['LAYOUT'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить неправильную раскладку</div>
@@ -115,10 +118,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
+        id="MORPHOLOGY"
         name="MORPHOLOGY"
         type="checkbox"
         class="ui-ctl-element"
-        disabled="disabled"
+        value="Y"
         <?php echo ($arResult['MORPHOLOGY'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить морфологию</div>

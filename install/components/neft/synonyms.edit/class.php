@@ -52,6 +52,10 @@ class SynonymsEditComponent extends CBitrixComponent
         'WORD' => trim($request->get('WORD')),
         'SYNONYMS' => trim($request->get('SYNONYMS')),
         'ACTIVE' => $request->get('ACTIVE') === 'Y' ? 'Y' : 'N',
+        'TRANSLIT' => $request->get('TRANSLIT') === 'Y' ? 'Y' : 'N',
+        'TYPOS' => $request->get('TYPOS') === 'Y' ? 'Y' : 'N',
+        'LAYOUT' => $request->get('LAYOUT') === 'Y' ? 'Y' : 'N',
+        'MORPHOLOGY' => $request->get('MORPHOLOGY') === 'Y' ? 'Y' : 'N',
       );
       if ($this->arResult['ID'] == 0) {
         SynonymsTable::add($data);
@@ -64,6 +68,10 @@ class SynonymsEditComponent extends CBitrixComponent
     $this->arResult['WORD'] = $data['WORD'];
     $this->arResult['SYNONYMS'] = $data['SYNONYMS'];
     $this->arResult['ACTIVE'] = $data['ACTIVE'];
+    $this->arResult['TRANSLIT'] = $data['TRANSLIT'];
+    $this->arResult['TYPOS'] = $data['TYPOS'];
+    $this->arResult['LAYOUT'] = $data['LAYOUT'];
+    $this->arResult['MORPHOLOGY'] = $data['MORPHOLOGY'];
 
     return true;
   }

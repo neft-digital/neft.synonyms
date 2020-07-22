@@ -26,12 +26,12 @@ if ($APPLICATION->GetGroupRight($module_id) == "D") {
 
 
 // TODO: Удалить
-// CopyDirFiles(
-//     $_SERVER["DOCUMENT_ROOT"] . "/local/modules/neft.synonyms/install/components/",
-//     $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/",
-//     true,
-//     true
-// );
+CopyDirFiles(
+    $_SERVER["DOCUMENT_ROOT"] . "/local/modules/neft.synonyms/install/components/",
+    $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/",
+    true,
+    true
+);
 
 
 
