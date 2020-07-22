@@ -128,4 +128,22 @@ class HelpersTest extends TestCase
       "the quick brown fox jumps over the lazy dog"
     ));
   }
+
+  /**
+   * @covers Neft\Synonyms\Helpers::translify
+   */
+  public function testTranslify()
+  {
+    $this->assertEquals(array_map('Neft\Synonyms\Helpers::translify', array(
+      "logokam",
+      "medialuks",
+      "проленд",
+      "юла"
+    )), array(
+      "логокам",
+      "медиалукс",
+      "prolend",
+      "yula"
+    ));
+  }
 }
