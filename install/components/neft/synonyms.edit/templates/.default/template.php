@@ -99,6 +99,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         type="checkbox"
         class="ui-ctl-element"
         value="Y"
+        disabled="disabled"
         <?php echo ($arResult['TYPOS'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить опечатки</div>
@@ -123,6 +124,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         type="checkbox"
         class="ui-ctl-element"
         value="Y"
+        disabled="disabled"
         <?php echo ($arResult['MORPHOLOGY'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить морфологию</div>

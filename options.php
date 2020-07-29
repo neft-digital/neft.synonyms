@@ -1,12 +1,11 @@
 <?php
-
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\HttpApplication;
-use \Bitrix\Main\Loader;
+use Bitrix\Main\Loader;
+use Neft\Synonyms\Helpers;
 
 $module_id = 'neft.synonyms';
-
 Loc::loadMessages($_SERVER["DOCUMENT_ROOT"] . BX_ROOT . "/modules/main/options.php");
 Loc::loadMessages(__FILE__);
 
@@ -15,40 +14,73 @@ if ($APPLICATION->GetGroupRight($module_id) < "S") {
 }
 
 Loader::includeModule($module_id);
+Loader::includeModule('iblock');
+
+
+
+
+
+
+echo "<pre>";
+
+
+$optAr = Option::get($module_id, "active");
+print_r($optAr);
+
+
+echo "</pre>";
+
+
+
+
+
+
+
 
 $request = HttpApplication::getInstance()->getContext()->getRequest();
 
+$iblockMultiselect = array();
+foreach (\Bitrix\Iblock\IblockTable::getList()->fetchAll() as $key => $iblock) {
+  $iblockMultiselect += array(
+    $iblock['ID'] => $iblock['NAME']
+  );
+}
+
 $aTabs = array(
   array(
-    'DIV' => 'edit1',
+    'DIV' => 'neft_synonyms_options',
     'TAB' => Loc::getMessage('NEFT_SYNONYMS_TAB_SETTINGS'),
     'OPTIONS' => array(
       array(
-        'field_text', Loc::getMessage('NEFT_SYNONYMS_FIELD_TEXT_TITLE'),
+        "active",
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_ACTIVE'),
         '',
-        array('textarea', 10, 50)
+        array(
+          "checkbox",
+          ""
+        )
+      ),
+      Loc::getMessage('NEFT_SYNONYMS_OPTIONS_IBLOCK_TITLE'),
+      array(
+        "note" => Loc::getMessage('NEFT_SYNONYMS_OPTIONS_IBLOCK_DESCRIPTION')
       ),
       array(
-        'field_line', Loc::getMessage('NEFT_SYNONYMS_FIELD_LINE_TITLE'),
+        'indexed_iblocks',
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_IBLOCK'),
         '',
-        array('text', 10)
-      ),
-      array(
-        'field_list', Loc::getMessage('NEFT_SYNONYMS_FIELD_LIST_TITLE'),
-        '',
-        array('multiselectbox', array('var1' => 'var1', 'var2' => 'var2', 'var3' => 'var3', 'var4' => 'var4'))
+        array(
+          'multiselectbox',
+          $iblockMultiselect
+        )
       ),
     )
   ),
   array(
-    "DIV" => "edit2",
+    "DIV" => "neft_synonyms_rights",
     "TAB" => Loc::getMessage("MAIN_TAB_RIGHTS"),
     "TITLE" => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS")
   ),
 );
-
-
-
 
 
 
@@ -66,17 +98,12 @@ if ($request->isPost() && $request['Update'] && check_bitrix_sessid()) {
   }
 }
 
-
-
-
-
-
-
-
-
 $tabControl = new CAdminTabControl('tabControl', $aTabs);
 $tabControl->Begin();
 ?>
+
+
+
 
 <form
   method='post'
@@ -96,6 +123,6 @@ $tabControl->Begin();
 
   <input type="submit" name="Update" value="<?php echo GetMessage('MAIN_SAVE') ?>">
   <input type="reset" name="reset" value="<?php echo GetMessage('MAIN_RESET') ?>">
-  <?=bitrix_sessid_post(); ?>
+  <?php echo bitrix_sessid_post() ?>
 </form>
 <?php $tabControl->End(); ?>

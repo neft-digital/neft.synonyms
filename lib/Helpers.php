@@ -241,7 +241,7 @@ class Helpers
    * @param string $word
    * @return string
    */
-  public function translify($word)
+  public static function translify($word)
   {
     $translationTable = array(
       array("‘", "'"),
