@@ -3,6 +3,7 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\HttpApplication;
 use Bitrix\Main\Loader;
+use Bitrix\Iblock\IblockTable;
 use Neft\Synonyms\Helpers;
 
 $module_id = 'neft.synonyms';
@@ -16,48 +17,28 @@ if ($APPLICATION->GetGroupRight($module_id) < "S") {
 Loader::includeModule($module_id);
 Loader::includeModule('iblock');
 
-
-
-
-
-
-echo "<pre>";
-
-
-$optAr = Option::get($module_id, "active");
-print_r($optAr);
-
-
-echo "</pre>";
-
-
-
-
-
-
-
-
 $request = HttpApplication::getInstance()->getContext()->getRequest();
 
 $iblockMultiselect = array();
-foreach (\Bitrix\Iblock\IblockTable::getList()->fetchAll() as $key => $iblock) {
+foreach (IblockTable::getList()->fetchAll() as $key => $iblock) {
   $iblockMultiselect += array(
     $iblock['ID'] => $iblock['NAME']
   );
 }
 
+// @link https://gist.github.com/maxsbelt/4476270
 $aTabs = array(
   array(
     'DIV' => 'neft_synonyms_options',
     'TAB' => Loc::getMessage('NEFT_SYNONYMS_TAB_SETTINGS'),
     'OPTIONS' => array(
       array(
-        "active",
+        'active',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_ACTIVE'),
         '',
         array(
-          "checkbox",
-          ""
+          'checkbox',
+          'Y'
         )
       ),
       Loc::getMessage('NEFT_SYNONYMS_OPTIONS_IBLOCK_TITLE'),
@@ -73,6 +54,44 @@ $aTabs = array(
           $iblockMultiselect
         )
       ),
+      Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION'),
+      array(
+        'suggestion_max',
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_MAX'),
+        '',
+        array(
+          'selectbox',
+          array(
+            '0'   => Loc::getMessage('NEFT_SYNONYMS_OPTIONS_NOT_SHOW'),
+            '10'  => '10',
+            '50'  => '50',
+            '100' => '100',
+            '150' => '150',
+            '300' => '300',
+          )
+        )
+      ),
+      array(
+        "note" => Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_CLARIFICATION')
+      ),
+      array(
+        'include_preview',
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_PREVIEW'),
+        '',
+        array(
+          'checkbox',
+          'Y',
+        )
+      ),
+      array(
+        'include_detail',
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_DETAIL'),
+        '',
+        array(
+          'checkbox',
+          '',
+        )
+      ),
     )
   ),
   array(
@@ -81,8 +100,6 @@ $aTabs = array(
     "TITLE" => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS")
   ),
 );
-
-
 
 
 if ($request->isPost() && $request['Update'] && check_bitrix_sessid()) {
@@ -101,8 +118,6 @@ if ($request->isPost() && $request['Update'] && check_bitrix_sessid()) {
 $tabControl = new CAdminTabControl('tabControl', $aTabs);
 $tabControl->Begin();
 ?>
-
-
 
 
 <form
