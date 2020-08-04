@@ -22,6 +22,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
       <div class="ui-alert ui-alert-success">
         <span class="ui-alert-message">Запись успешно обновлена.</span>
       </div>
+      <div class="ui-alert ui-alert-primary">
+        <span class="ui-alert-message"><strong>Внимание!</strong> Не забудьте, что после добавления всех синонимов необходимо выполнить полную переиндексацию сайта!</span>
+      </div>
     </div>
     <script>
       window.parent.BX.Main.gridManager.getInstanceById('neft_synonyms').reloadTable();
@@ -51,10 +54,32 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   </div>
 
 
+
+
   <div class="neft-form-field ui-ctl-row neft-synonyms-field-word">
     <div class="ui-text-1 ui-color-medium">Ключевое слово:</div>
+
+    <?php if ($arResult['SUGGESTION']) { ?>
+      <div class="ui-alert ui-alert-primary">
+        <span class="ui-alert-message">
+          <?php foreach ($arResult['SUGGESTION'] as $suggestion) {
+            echo '<a class="ui-link ui-link-secondary ui-link-dashed neft-suggestion" title="Нажмите для быстрого добавления">' . $suggestion . '</a> ';
+          } ?>
+        </span>
+      </div>
+      <script>
+        document.querySelectorAll('.neft-suggestion').forEach(item => {
+          item.addEventListener('click', event => {
+            event.preventDefault();
+            document.getElementById("neft-input-word").value = item.textContent;
+          })
+        })
+      </script>
+    <?php } ?>
+
     <div class="ui-ctl ui-ctl-textbox ui-ctl-block">
       <input
+        id="neft-input-word"
         type="text"
         name="WORD"
         value="<?php echo htmlspecialcharsbx($arResult['WORD']) ?>"
@@ -94,19 +119,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
-        id="TYPOS"
-        name="TYPOS"
-        type="checkbox"
-        class="ui-ctl-element"
-        value="Y"
-        disabled="disabled"
-        <?php echo ($arResult['TYPOS'] === 'Y' ? 'checked' : '') ?>
-      >
-      <div class="ui-ctl-label-text">Добавить опечатки</div>
-    </label>
-
-    <label class="ui-ctl ui-ctl-checkbox">
-      <input
         id="LAYOUT"
         name="LAYOUT"
         type="checkbox"
@@ -117,6 +129,21 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
       <div class="ui-ctl-label-text">Добавить неправильную раскладку</div>
     </label>
 
+    <?php
+    // TODO: Реализовать данный функционал в следующих версиях модуля
+    /*
+    <label class="ui-ctl ui-ctl-checkbox">
+      <input
+        id="TYPOS"
+        name="TYPOS"
+        type="checkbox"
+        class="ui-ctl-element"
+        value="Y"
+        <?php echo ($arResult['TYPOS'] === 'Y' ? 'checked' : '') ?>
+      >
+      <div class="ui-ctl-label-text">Добавить опечатки</div>
+    </label>
+
     <label class="ui-ctl ui-ctl-checkbox">
       <input
         id="MORPHOLOGY"
@@ -124,11 +151,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         type="checkbox"
         class="ui-ctl-element"
         value="Y"
-        disabled="disabled"
         <?php echo ($arResult['MORPHOLOGY'] === 'Y' ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">Добавить морфологию</div>
     </label>
+    */
+    ?>
   </div>
 
 

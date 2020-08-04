@@ -6,6 +6,9 @@ use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Error;
 use Neft\Synonyms\SynonymsTable;
+use Bitrix\Main\Config\Option;
+use Neft\Synonyms\Helpers;
+use Neft\Synonyms\WordProcessing;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   die();
@@ -45,6 +48,11 @@ class SynonymsEditComponent extends CBitrixComponent
             :
             "Добавить ключевое слово"
       );
+    }
+
+    $wordProcessing = new WordProcessing();
+    if ($this->arResult['ID'] == 0) {
+      $this->arResult['SUGGESTION'] = $wordProcessing->getWordsTop();
     }
 
     if ($this->request->isPost() && check_bitrix_sessid()) {

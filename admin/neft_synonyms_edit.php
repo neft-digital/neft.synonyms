@@ -22,9 +22,6 @@ if ($APPLICATION->GetGroupRight($module_id) == "D") {
 }
 
 
-
-
-
 // TODO: Удалить
 // CopyDirFiles(
 //     $_SERVER["DOCUMENT_ROOT"] . "/local/modules/neft.synonyms/install/components/",
@@ -34,9 +31,7 @@ if ($APPLICATION->GetGroupRight($module_id) == "D") {
 // );
 
 
-
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
-
 
 $APPLICATION->IncludeComponent(
     'bitrix:ui.sidepanel.wrapper',
@@ -54,6 +49,5 @@ $APPLICATION->IncludeComponent(
       'USE_PADDING' => true
     ]
 );
-
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
