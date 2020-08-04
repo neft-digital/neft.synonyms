@@ -116,7 +116,6 @@ $nav->setRecordCount($result->getCount());
 ?>
 
 
-
 <div class="pagetitle-inner-container">
   <div class="pagetitle-container pagetitle-flexible-space">
     <?php
@@ -158,7 +157,6 @@ $nav->setRecordCount($result->getCount());
     </a>
   </div>
 </div>
-
 
 
 <?php

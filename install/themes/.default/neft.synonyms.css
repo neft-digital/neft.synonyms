@@ -26,16 +26,12 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0;
-  min-height: 74px;
+  min-height: 0;
   box-sizing: border-box;
 }
 
 div.pagetitle-container.pagetitle-align-right-container {
   margin: 0 0 0 auto !important;
-}
-
-.pagetitle-inner-container {
-  min-height: 0;
 }
 
 .pagetitle-inner-container .pagetitle-flexible-space {

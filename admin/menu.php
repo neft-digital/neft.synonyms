@@ -24,7 +24,7 @@ return array(
   array(
     "parent_menu"   => "global_menu_marketing",
     "sort"          => 2000,
-    "url"           => "neft_synonyms.php?lang=".LANGUAGE_ID,
+    "url"           => "neft_synonyms.php?lang=" . LANGUAGE_ID,
     "more_url"      => array(
       "neft_synonyms.php",
       "neft_synonyms.php?edit=Y",
