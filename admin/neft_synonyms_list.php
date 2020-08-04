@@ -12,9 +12,11 @@ use Bitrix\Main\Grid\Options as GridOptions;
 use Bitrix\Main\UI\Filter\Options as FilterOptions;
 use Bitrix\Main\UI\PageNavigation;
 use Bitrix\Main\UI\Extension;
+use Bitrix\Main\Config\Option;
 use Neft\Synonyms\SynonymsTable;
 use Bitrix\Main\ORM\Query\Query;
 use Neft\Synonyms\SearchTitleExtender;
+use Neft\Synonyms\WordProcessing;
 
 $module_id = "neft.synonyms";
 Loader::includeModule($module_id);
@@ -41,6 +43,25 @@ if (isset($_REQUEST["DEL"]) && $_REQUEST["ID"]) {
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
+
+
+if (Option::get($module_id, "active") != "Y") { ?>
+  <div class="ui-alert ui-alert-warning">
+    <span class="ui-alert-message">
+      Модуль деактивирован на странице настроек.
+      Чтобы поисковые синонимы применились при переиндексации, необходимо активировать модуль.
+    </span>
+  </div>
+<?php }
+
+if (!Option::get("neft.synonyms", "indexed_iblocks")) { ?>
+  <div class="ui-alert ui-alert-danger">
+    <span class="ui-alert-message">
+      Перед началом работы необходимо указать инфоблоки для индексации на странице настроек модуля.
+    </span>
+  </div>
+<?php }
+
 
 $listId = SynonymsTable::getTableName();
 
