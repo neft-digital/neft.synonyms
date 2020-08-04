@@ -12,3 +12,6 @@ $MESS["NEFT_SYNONYMS_OPTIONS_SUGGESTION_MAX"] = "Количество подск
 $MESS["NEFT_SYNONYMS_OPTIONS_SUGGESTION_PREVIEW"] = "Включать текст анонса в подсказки";
 $MESS["NEFT_SYNONYMS_OPTIONS_SUGGESTION_DETAIL"] = "Включать текст детального описания в подсказки (не рекомендуется)";
 $MESS["NEFT_SYNONYMS_OPTIONS_SUGGESTION_CLARIFICATION"] = "По умолчанию модуль анализирует только заголовки элементов инфоблока, но можно расширить анализ, добавив в него анонс и детальное описание";
+
+$MESS["NEFT_SYNONYMS_OPTIONS_TAGS"] = "Теги";
+$MESS["NEFT_SYNONYMS_OPTIONS_TAGS_ADD"] = "Добавлять синонимы в список тегов";

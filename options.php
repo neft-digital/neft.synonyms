@@ -92,6 +92,16 @@ $aTabs = array(
           '',
         )
       ),
+      Loc::getMessage('NEFT_SYNONYMS_OPTIONS_TAGS'),
+      array(
+        'add_tags',
+        Loc::getMessage('NEFT_SYNONYMS_OPTIONS_TAGS_ADD'),
+        '',
+        array(
+          'checkbox',
+          'Y',
+        )
+      ),
     )
   ),
   array(

@@ -1,61 +1,25 @@
 <?php
-/**
- * @link https://burlaka.studio/lab/search_taged_by_reference/
- */
-
 namespace Neft\Synonyms;
 
 use Bitrix\Highloadblock\HighloadBlockTable;
 use Bitrix\Main\Loader;
-use Neft\Synonyms\SynonymsTable;
+use Bitrix\Main\Config\Option;
+use Neft\Synonyms\Helpers;
+use Neft\Synonyms\WordProcessing;
 
 class SearchTitleExtender
 {
-  public function __construct()
-  {
-  }
-
-  public static function test()
-  {
-    AddMessage2Log("Проверка класса", "neft_synonyms");
-    return 11111;
-  }
-
   /**
-   * Расширяет массив слов, добавляя в него синонимы из таблицы
-   *
-   * @param array $words Массив изначальных слов
-   * @param boolean $includeOrig Включать ли изначальные слова в итоговый массив
-   * @return array Массив дополненных слов
+   * @link https://burlaka.studio/lab/search_taged_by_reference/
    */
-  public static function CompleteWords($words, $includeOrig = false)
-  {
-    $words = array_map('strtolower', $words);
-    $wordsEx = $words;
-    $synonyms = SynonymsTable::getList(array(
-        'select' => array('WORD', 'SYNONYMS', 'TRANSLIT', 'TYPOS', 'LAYOUT', 'MORPHOLOGY'),
-        'filter' => array('ACTIVE' => 'Y'),
-    ))->fetchAll();
-
-    foreach ($synonyms as $synonym) {
-      if (in_array(strtolower($synonym['WORD']), $words)) {
-        $synonym['SYNONYMS'] = str_replace(',', ' ', $synonym['SYNONYMS']);
-        $synonym['SYNONYMS'] = preg_replace('|[\s]+|s', ' ', $synonym['SYNONYMS']);
-        $wordsEx = array_merge($wordsEx, explode(' ', $synonym['SYNONYMS']));
-      }
-    }
-
-    $wordsEx = array_unique($wordsEx);
-    if (!$includeOrig) {
-      $wordsEx = array_diff($wordsEx, $words);
-    }
-
-    return $wordsEx;
-  }
-
   public static function OnAfterIndexAdd($searchContentId, &$arFields)
   {
-    $targetIblocks = [9, 8]; // TODO: Вынести в настройки
+    $module_id = 'neft.synonyms';
+    $targetIblocks = explode(',', Option::get($module_id, "indexed_iblocks"));
+
+    if (Option::get($module_id, "active") != "Y") {
+      return;
+    }
 
     if ($arFields['MODULE_ID'] !== 'iblock' ||
       !$arFields['ITEM_ID'] ||
@@ -64,18 +28,100 @@ class SearchTitleExtender
       return;
     }
 
-    $additionalWords = static::CompleteWords(explode(' ', $arFields["TITLE"]), false);
-    // AddMessage2Log($additionalWords, "neft_synonyms");
+    $wordsObj = new WordProcessing();
+    $additionalWords = $wordsObj->expandWords($arFields["TITLE"], false, true);
+
+    // AddMessage2Log($arFields["TITLE"], "neft_synonyms", 0);
+    // AddMessage2Log($additionalWords, "neft_synonyms", 0);
 
     if (!empty($additionalWords)) {
       \CSearch::IndexTitle(
           $arFields["SITE_ID"],
           $searchContentId,
-          implode(' ', $additionalWords)
+          $additionalWords
       );
 
-      $arFields["TITLE"] .= implode(' ', $additionalWords);
+      $arFields["TITLE"] .= $additionalWords;
       \CSearchFullText::getInstance()->replace($searchContentId, $arFields);
     }
+  }
+
+  /**
+   * @link https://burlaka.studio/lab/search_taged_by_reference/
+   */
+  // public static function BeforeIndex($arFields = [])
+  // {
+  //   if ($arFields['MODULE_ID'] !== 'iblock' ||
+  //     !$arFields['ITEM_ID']
+  //   ) {
+  //     return;
+  //   }
+  //   global $DB;
+  //   $DB->StartTransaction();
+  //   $result = $DB->Query(
+  //       sprintf(
+  //           'SELECT ID
+  //                   FROM b_search_content
+  //                   WHERE ITEM_ID="%s"',
+  //           $arFields['ITEM_ID']
+  //       )
+  //   );
+  //   $arr = $result->Fetch();
+  //   if (empty($arr)) {
+  //     return;
+  //   }
+  //   $DB->Query(
+  //       sprintf(
+  //           '
+  //           DELETE b_search_content, b_search_content_title
+  //           FROM b_search_content
+  //               INNER JOIN b_search_content_title
+  //                   ON b_search_content_title.SEARCH_CONTENT_ID = b_search_content.ID
+  //           WHERE
+  //               b_search_content.ITEM_ID = "%s";
+  //           ',
+  //           $arFields['ITEM_ID']
+  //       )
+  //   );
+  //   $DB->Commit();
+  //   $emptyKeys = ['URL', 'TITLE', 'BODY'];
+  //   array_walk($arFields, static function (&$item, $key) use ($emptyKeys) {
+  //     if (in_array($key, $emptyKeys)) {
+  //       $item = '';
+  //     }
+  //   });
+  //   \CSearchFullText::getInstance()->replace($arr['ID'], $arFields);
+  // }
+
+
+  public static function BeforeIndex($arFields = [])
+  {
+    $module_id = 'neft.synonyms';
+
+    if (Option::get($module_id, "active") != "Y") {
+      return;
+    }
+
+    if (Option::get($module_id, "add_tags") != "Y") {
+      return;
+    }
+
+    $targetIblocks = explode(',', Option::get($module_id, "indexed_iblocks"));
+
+    if (!Loader::includeModule("iblock")) {
+      return $arFields;
+    }
+
+    if ($arFields['MODULE_ID'] == 'iblock' && in_array($arFields['PARAM2'], $targetIblocks)) {
+      $wordProcessing = new WordProcessing();
+      $newTags = array_merge(
+          explode(',', $arFields["TAGS"]),
+          $wordProcessing->expandWords($arFields["TITLE"], false, false)
+      );
+      $newTags = array_unique($newTags);
+      $arFields["TAGS"] = implode(',', $newTags);
+    }
+
+    return $arFields;
   }
 }

@@ -156,6 +156,13 @@ class neft_synonyms extends CModule
         '\Neft\Synonyms\SearchTitleExtender',
         'OnAfterIndexAdd'
     );
+    EventManager::getInstance()->registerEventHandler(
+        'search',
+        'BeforeIndex',
+        $this->MODULE_ID,
+        '\Neft\Synonyms\SearchTitleExtender',
+        'BeforeIndex'
+    );
     return true;
   }
 
@@ -167,6 +174,13 @@ class neft_synonyms extends CModule
         $this->MODULE_ID,
         '\Neft\Synonyms\SearchTitleExtender',
         'OnAfterIndexAdd'
+    );
+    EventManager::getInstance()->unRegisterEventHandler(
+        'search',
+        'BeforeIndex',
+        $this->MODULE_ID,
+        '\Neft\Synonyms\SearchTitleExtender',
+        'BeforeIndex'
     );
     return true;
   }
