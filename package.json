@@ -1,0 +1,30 @@
+{
+  "name": "neft.synonyms",
+  "version": "0.1.0",
+  "description": "Модуль для 1С-Битрикс для создания Поисковых синонимов.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/gulp",
+    "release": "./node_modules/.bin/gulp release",
+    "last_version": "./node_modules/.bin/gulp last_version",
+    "build_update": "./node_modules/.bin/gulp build_update"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neft-digital/neft.synonyms.git"
+  },
+  "author": "Alexander Balya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neft-digital/neft.synonyms/issues"
+  },
+  "homepage": "https://github.com/neft-digital/neft.synonyms#readme",
+  "dependencies": {
+    "gulp": "^4.0.0",
+    "gulp-build-bitrix-modul": "^1.7.3"
+  }
+}
