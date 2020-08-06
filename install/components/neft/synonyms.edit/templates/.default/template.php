@@ -6,6 +6,8 @@
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   die();
 }
+
+use Bitrix\Main\Localization\Loc;
 ?>
 
 
@@ -20,10 +22,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   <?php if ($arResult['IS_SAVED'] && !$arResult['ERRORS']) { ?>
     <div class="neft-form-field ui-ctl-row">
       <div class="ui-alert ui-alert-success">
-        <span class="ui-alert-message">Запись успешно обновлена.</span>
+        <span class="ui-alert-message">
+          <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_SUCCESS') ?>
+        </span>
       </div>
       <div class="ui-alert ui-alert-primary">
-        <span class="ui-alert-message"><strong>Внимание!</strong> Не забудьте, что после добавления всех синонимов необходимо выполнить полную переиндексацию сайта!</span>
+        <span class="ui-alert-message">
+          <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_INFO_ALERT') ?>
+        </span>
       </div>
     </div>
     <script>
@@ -33,7 +39,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
   if ($arResult['ERRORS']) { ?>
     <div class="neft-form-field ui-ctl-row">
       <div class="ui-alert ui-alert-danger">
-        <span class="ui-alert-message">Что-то пошло не так.</span>
+        <span class="ui-alert-message">
+          <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ERROR') ?>
+        </span>
       </div>
     </div>
   <?php } ?>
@@ -49,21 +57,27 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         value="Y"
         <?php echo ($arResult['ACTIVE'] === 'Y' || $arResult['ID'] === 0 ? 'checked' : '') ?>
       >
-      <div class="ui-ctl-label-text">Активно</div>
+      <div class="ui-ctl-label-text">
+        <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ACTIVE') ?>
+      </div>
     </label>
   </div>
 
 
-
-
   <div class="neft-form-field ui-ctl-row neft-synonyms-field-word">
-    <div class="ui-text-1 ui-color-medium">Ключевое слово:</div>
+    <div class="ui-text-1 ui-color-medium">
+      <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_KEYWORD') ?>:
+    </div>
 
     <?php if ($arResult['SUGGESTION']) { ?>
       <div class="ui-alert ui-alert-primary">
         <span class="ui-alert-message">
           <?php foreach ($arResult['SUGGESTION'] as $suggestion) {
-            echo '<a class="ui-link ui-link-secondary ui-link-dashed neft-suggestion" title="Нажмите для быстрого добавления">' . $suggestion . '</a> ';
+            echo '<a class="ui-link ui-link-secondary ui-link-dashed neft-suggestion" title="'
+              .Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_NOTE')
+              .'">'
+              .$suggestion
+              .'</a> ';
           } ?>
         </span>
       </div>
@@ -84,26 +98,30 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         name="WORD"
         value="<?php echo htmlspecialcharsbx($arResult['WORD']) ?>"
         class="ui-ctl-element"
-        placeholder="Ключевое слово"
+        placeholder="<?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_KEYWORD') ?>"
       >
     </div>
   </div>
 
 
   <div class="neft-form-field ui-ctl-row">
-    <div class="ui-text-1 ui-color-medium">Синонимы:</div>
+    <div class="ui-text-1 ui-color-medium">
+      <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_SYNONYMS') ?>:
+    </div>
     <div class="ui-ctl ui-ctl-textarea">
       <textarea
         name="SYNONYMS"
         class="ui-ctl-element ui-ctl-resize"
-        placeholder="Синонимы"
+        placeholder="<?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_SYNONYMS') ?>"
       ><?php echo trim(htmlspecialcharsbx($arResult['SYNONYMS'])) ?></textarea>
     </div>
   </div>
 
 
   <div class="neft-form-field ui-ctl-row">
-    <div class="ui-text-1 ui-color-medium">Дополнительные параметры:</div>
+    <div class="ui-text-1 ui-color-medium">
+      <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADDITIONAL') ?>:
+    </div>
 
     <label class="ui-ctl ui-ctl-checkbox">
       <input
@@ -114,7 +132,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         value="Y"
         <?php echo ($arResult['TRANSLIT'] === 'Y' ? 'checked' : '') ?>
       >
-      <div class="ui-ctl-label-text">Добавить транслит</div>
+      <div class="ui-ctl-label-text">
+        <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_TRANSLIT') ?>
+      </div>
     </label>
 
     <label class="ui-ctl ui-ctl-checkbox">
@@ -126,11 +146,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         value="Y"
         <?php echo ($arResult['LAYOUT'] === 'Y' ? 'checked' : '') ?>
       >
-      <div class="ui-ctl-label-text">Добавить неправильную раскладку</div>
+      <div class="ui-ctl-label-text">
+        <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_LAYOUT') ?>
+      </div>
     </label>
 
     <?php
-    // TODO: Реализовать данный функционал в следующих версиях модуля
     /*
     <label class="ui-ctl ui-ctl-checkbox">
       <input
@@ -141,7 +162,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         value="Y"
         <?php echo ($arResult['TYPOS'] === 'Y' ? 'checked' : '') ?>
       >
-      <div class="ui-ctl-label-text">Добавить опечатки</div>
+      <div class="ui-ctl-label-text">
+        <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_TYPOS') ?>
+      </div>
     </label>
 
     <label class="ui-ctl ui-ctl-checkbox">
@@ -153,7 +176,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         value="Y"
         <?php echo ($arResult['MORPHOLOGY'] === 'Y' ? 'checked' : '') ?>
       >
-      <div class="ui-ctl-label-text">Добавить морфологию</div>
+      <div class="ui-ctl-label-text">
+        <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_MORPHOLOGY') ?>
+      </div>
     </label>
     */
     ?>
@@ -167,7 +192,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
       [
         'BUTTONS' => [
           'save',
-          // 'cancel' => '/bitrix/admin/neft_synonyms.php?lang=ru',
           'close'
         ]
       ]

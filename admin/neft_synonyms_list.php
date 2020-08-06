@@ -48,8 +48,7 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_a
 if (Option::get($module_id, "active") != "Y") { ?>
   <div class="ui-alert ui-alert-warning">
     <span class="ui-alert-message">
-      Модуль деактивирован на странице настроек.
-      Чтобы поисковые синонимы применились при переиндексации, необходимо активировать модуль.
+      <?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_INACTIVE") ?>
     </span>
   </div>
 <?php }
@@ -57,7 +56,7 @@ if (Option::get($module_id, "active") != "Y") { ?>
 if (!Option::get("neft.synonyms", "indexed_iblocks")) { ?>
   <div class="ui-alert ui-alert-danger">
     <span class="ui-alert-message">
-      Перед началом работы необходимо указать инфоблоки для индексации на странице настроек модуля.
+      <?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_BEFORESTART") ?>
     </span>
   </div>
 <?php }
@@ -119,7 +118,6 @@ $nav->setRecordCount($result->getCount());
 <div class="pagetitle-inner-container">
   <div class="pagetitle-container pagetitle-flexible-space">
     <?php
-    // date, list, number, quick, custom
     $APPLICATION->IncludeComponent('bitrix:main.ui.filter', '', [
       'FILTER_ID' => $listId,
       'GRID_ID' => $listId,
@@ -182,7 +180,7 @@ foreach ($result->fetchAll() as $row) {
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_DELETE"),
         'default' => true,
-        'onclick' => 'if(confirm("Точно?")){document.location.href="?DEL=Y&ID=' . $row['ID'] . '"}'
+        'onclick' => 'if(confirm("<?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_SURE") ?>")){document.location.href="?DEL=Y&ID=' . $row['ID'] . '"}'
       ]
     ]
   ];
@@ -202,7 +200,7 @@ $APPLICATION->IncludeComponent('bitrix:main.ui.grid', '', [
     ],
     [
       'id' => 'SYNONYMS',
-      'name' => 'Синонимы',
+      'name' => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_SYNONYMS"),
       'sort' => 'SYNONYMS',
       'default' => true
     ],

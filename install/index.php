@@ -20,6 +20,8 @@ Loc::loadMessages(__FILE__);
 
 class neft_synonyms extends CModule
 {
+  public $MODULE_ID = "neft.synonyms"; // Для Маркетплейса
+
   public function __construct()
   {
     $this->MODULE_ID = str_replace("_", ".", get_class($this));

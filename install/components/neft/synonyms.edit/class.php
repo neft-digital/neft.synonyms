@@ -5,8 +5,8 @@ use Bitrix\Main\ErrorCollection;
 use Bitrix\Main\Context;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Error;
-use Neft\Synonyms\SynonymsTable;
 use Bitrix\Main\Config\Option;
+use Neft\Synonyms\SynonymsTable;
 use Neft\Synonyms\Helpers;
 use Neft\Synonyms\WordProcessing;
 
@@ -44,9 +44,9 @@ class SynonymsEditComponent extends CBitrixComponent
       $GLOBALS['APPLICATION']->SetTitle(
           $this->arResult['ID'] > 0
             ?
-            "Редактировать ключевое слово"
+            Loc::getMessage('NEFT_SYNONYMS_EDIT_EDIT')
             :
-            "Добавить ключевое слово"
+            Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD')
       );
     }
 
