@@ -1,29 +1,126 @@
 "use strict";
 
-let gulp = require('gulp');
-let build = require('gulp-build-bitrix-modul')({
-    name: 'neft.synonyms',
-    tools: {
-        'project.tools': ['Project', 'Tools']
-    },
-    encode: [
-        // 'include.php',
-        // 'project.tools/**/*.php',
-        // '!project.tools/modules/install.php'
-    ]
+let gulp = require('gulp'),
+  plugins = require('gulp-load-plugins')({
+    pattern: ['*', '!stylelint'],
+    replaceString: /^(gulp|postcss|imagemin)(-|\.)/,
+    camelize: true
+}),
+buildFolder = 'build',
+config = {
+  path: [
+    './**',
+    '!{node_modules,node_modules/**}',
+    '!{dist,dist/**}',
+    '!{build,build/**}',
+    '!*.js',
+    '!*.json',
+    '!{bxApiDocs,bxApiDocs/**}',
+    '!*.lock',
+    '!phpcs.xml',
+    '!TODO.md',
+    '!.editorconfig',
+    '!{.git,.git/**}',
+    '!{.history,.history/**}',
+    '!.gitignore'
+  ],
+  encodeMask: '/**/*.{md,php,js}',
+  build: buildFolder,
+  last: buildFolder + '/.last_version',
+  dist: buildFolder + '/dist',
+  encoded: buildFolder + '/encoded',
+  decoded: buildFolder + '/decoded'
+};
+
+gulp.task('init', function(done) {
+  done();
 });
 
-// Сборка текущей версии модуля
-gulp.task('release', build.release);
+gulp.task('clean', function() {
+  return plugins.del(config.build + '/**', {
+    force: true,
+    dot: true
+  });
+});
 
-// Сборка текущей версии модуля для маркетплейса
-gulp.task('last_version', build.last_version);
+gulp.task('copy', function() {
+  return gulp.src(config.path, {
+    base: './',
+    dot: true
+  })
+    .pipe(gulp.dest(config.dist));
+});
 
-// Сборка обновления модуля (разница между последней и предпоследней версией по тегам git)
-gulp.task('build_update', build.update);
+gulp.task('copyToEncode', function() {
+  return gulp.src(config.dist + '/**/*', {
+    dot: true
+  })
+    .pipe(gulp.dest(config.encoded));
+});
 
-// Дефолтная задача. Собирает все по очереди
-gulp.task('default', gulp.series('release', 'last_version', 'build_update'));
+gulp.task('encode', function() {
+  return gulp.src(config.encoded + config.encodeMask)
+    .pipe(plugins.iconv({
+      decoding: 'utf8',
+      encoding: 'win1251'
+    }))
+    .pipe(gulp.dest(function(file) {
+      return file.base;
+    }));
+});
 
-// достаточно указать 'last_version', так как команда вызывает код release и build_update
-gulp.task('default', gulp.series('last_version'));
+gulp.task('copyEncoded', function() {
+  return gulp.src(config.encoded + '/**/*', {
+    dot: true
+  })
+    .pipe(gulp.dest(config.decoded));
+});
+
+gulp.task('decode', function() {
+  return gulp.src(config.decoded + config.encodeMask)
+    .pipe(plugins.iconv({
+      decoding: 'win1251',
+      encoding: 'utf8'
+    }))
+    .pipe(gulp.dest(function(file) {
+      return file.base;
+    }));
+});
+
+gulp.task('compare', function() {
+  return gulp.src(config.decoded + config.encodeMask)
+    .pipe(plugins.diff(config.dist))
+    .pipe(plugins.diff.reporter({
+      fail: true
+    }));
+});
+
+gulp.task('copyLast', function() {
+  return gulp.src(config.encoded + '/**/*', {
+    dot: true
+  })
+    .pipe(gulp.dest(config.last));
+});
+
+gulp.task('archive', function() {
+  return gulp.src(config.last + '/**/*', {
+    dot: true
+  })
+    .pipe(plugins.zip('.last_version.zip'))
+    .pipe(gulp.dest(config.build));
+});
+
+gulp.task('default',
+  gulp.series(
+    'init',
+    'clean',
+    'copy',
+    'copyToEncode',
+    'encode',
+    'copyEncoded',
+    'decode',
+    'compare',
+    'copyLast',
+    'archive'
+  )
+);

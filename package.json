@@ -8,10 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "./node_modules/.bin/gulp",
-    "release": "./node_modules/.bin/gulp release",
-    "last_version": "./node_modules/.bin/gulp last_version",
-    "build_update": "./node_modules/.bin/gulp build_update"
+    "build": "./node_modules/.bin/gulp"
   },
   "repository": {
     "type": "git",
@@ -24,7 +21,20 @@
   },
   "homepage": "https://github.com/neft-digital/neft.synonyms#readme",
   "dependencies": {
+    "del": "^5.1.0",
+    "fs": "0.0.1-security",
     "gulp": "^4.0.0",
-    "gulp-build-bitrix-modul": "^1.7.3"
+    "gulp-batch-replace": "0.0.0",
+    "gulp-diff": "^1.0.0",
+    "gulp-file": "^0.4.0",
+    "gulp-git": "^2.10.1",
+    "gulp-gzip": "^1.4.2",
+    "gulp-iconv": "0.0.1",
+    "gulp-load-plugins": "^2.0.3",
+    "gulp-rename": "^2.0.0",
+    "gulp-tar": "^3.1.0",
+    "gulp-zip": "^5.0.2",
+    "os": "^0.1.1",
+    "path": "^0.12.7"
   }
 }
