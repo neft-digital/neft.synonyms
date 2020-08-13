@@ -39,6 +39,7 @@ Extension::load("sidepanel");
 if (isset($_REQUEST["DEL"]) && $_REQUEST["ID"]) {
   if ($_REQUEST["DEL"] === "Y") {
     SynonymsTable::delete($_REQUEST["ID"]);
+    LocalRedirect("neft_synonyms.php");
   }
 }
 
@@ -180,7 +181,11 @@ foreach ($result->fetchAll() as $row) {
       [
         'text'    => Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_DELETE"),
         'default' => true,
-        'onclick' => 'if(confirm("<?php echo Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_SURE") ?>")){document.location.href="?DEL=Y&ID=' . $row['ID'] . '"}'
+        'onclick' => 'if(confirm("'
+          . Loc::getMessage("NEFT_SYNONYMS_ADMIN_PAGE_SURE")
+          . '")){document.location.href="?DEL=Y&ID='
+          . $row['ID']
+          . '"}'
       ]
     ]
   ];
