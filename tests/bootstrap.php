@@ -1,5 +1,11 @@
 <?php
-$_SERVER["DOCUMENT_ROOT"] = realpath(__DIR__ . "/../../../..");
+for ($i=1; $i < 6; $i++) {
+  $path = dirname(getcwd(), $i);
+  if (in_array("bitrix", scandir($path))) {
+    $_SERVER["DOCUMENT_ROOT"] = realpath($path);
+    break;
+  }
+}
 
 define("SITE_ID", "s1");
 define("NO_KEEP_STATISTIC", true);
