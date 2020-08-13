@@ -99,6 +99,7 @@ use Bitrix\Main\Localization\Loc;
         value="<?php echo htmlspecialcharsbx($arResult['WORD']) ?>"
         class="ui-ctl-element"
         placeholder="<?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_KEYWORD') ?>"
+        required
       >
     </div>
   </div>
@@ -113,6 +114,7 @@ use Bitrix\Main\Localization\Loc;
         name="SYNONYMS"
         class="ui-ctl-element ui-ctl-resize"
         placeholder="<?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_SYNONYMS') ?>"
+        required
       ><?php echo trim(htmlspecialcharsbx($arResult['SYNONYMS'])) ?></textarea>
     </div>
   </div>
@@ -130,7 +132,7 @@ use Bitrix\Main\Localization\Loc;
         type="checkbox"
         class="ui-ctl-element"
         value="Y"
-        <?php echo ($arResult['TRANSLIT'] === 'Y' ? 'checked' : '') ?>
+        <?php echo ($arResult['TRANSLIT'] === 'Y' || $arResult['ID'] === 0 ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">
         <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_TRANSLIT') ?>
@@ -144,7 +146,7 @@ use Bitrix\Main\Localization\Loc;
         type="checkbox"
         class="ui-ctl-element"
         value="Y"
-        <?php echo ($arResult['LAYOUT'] === 'Y' ? 'checked' : '') ?>
+        <?php echo ($arResult['LAYOUT'] === 'Y' || $arResult['ID'] === 0 ? 'checked' : '') ?>
       >
       <div class="ui-ctl-label-text">
         <?php echo Loc::getMessage('NEFT_SYNONYMS_EDIT_ADD_LAYOUT') ?>
