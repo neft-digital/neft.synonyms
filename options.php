@@ -4,8 +4,8 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\HttpApplication;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\IblockTable;
-use Neft\Synonyms\Helpers;
 use Bitrix\Main\UI\Extension;
+use Neft\Synonyms\Helpers;
 
 $module_id = 'neft.synonyms';
 Loc::loadMessages($_SERVER["DOCUMENT_ROOT"] . BX_ROOT . "/modules/main/options.php");
@@ -36,6 +36,8 @@ foreach (IblockTable::getList()->fetchAll() as $key => $iblock) {
   );
 }
 
+$defaultOptions = Option::getDefaults($module_id);
+
 // @link https://gist.github.com/maxsbelt/4476270
 $aTabs = array(
   array(
@@ -45,10 +47,9 @@ $aTabs = array(
       array(
         'active',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_ACTIVE'),
-        '',
+        'Y',
         array(
-          'checkbox',
-          'Y'
+          'checkbox'
         )
       ),
       Loc::getMessage('NEFT_SYNONYMS_OPTIONS_IBLOCK_TITLE'),
@@ -68,7 +69,7 @@ $aTabs = array(
       array(
         'suggestion_max',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_MAX'),
-        '',
+        '150',
         array(
           'selectbox',
           array(
@@ -87,29 +88,26 @@ $aTabs = array(
       array(
         'include_preview',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_PREVIEW'),
-        '',
+        'Y',
         array(
-          'checkbox',
-          'Y',
+          'checkbox'
         )
       ),
       array(
         'include_detail',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUGGESTION_DETAIL'),
-        '',
+        'N',
         array(
-          'checkbox',
-          '',
+          'checkbox'
         )
       ),
       Loc::getMessage('NEFT_SYNONYMS_OPTIONS_TAGS'),
       array(
         'add_tags',
         Loc::getMessage('NEFT_SYNONYMS_OPTIONS_TAGS_ADD'),
-        '',
+        'Y',
         array(
-          'checkbox',
-          'Y',
+          'checkbox'
         )
       ),
     )
@@ -123,19 +121,17 @@ $aTabs = array(
 
 if ($request->isPost() && $request['Update'] && check_bitrix_sessid()) {
   foreach ($aTabs as $aTab) {
-    if (is_array($aTab['OPTIONS'])) {
-      foreach ($aTab['OPTIONS'] as $arOption) {
-        if (!is_array($arOption) || $arOption['note']) {
-          continue;
-        }
-        $optionName = $arOption[0];
-        $optionValue = $request->getPost($optionName);
-        Option::set($module_id, $optionName, is_array($optionValue) ? implode(",", $optionValue) : $optionValue);
-      }
-    }
+    __AdmSettingsSaveOptions($module_id, $aTab['OPTIONS']);
   }
 
+  LocalRedirect(
+      $APPLICATION->GetCurPage()
+      . '?lang=' . LANGUAGE_ID
+      . '&mid_menu=1&mid=' . urlencode($module_id)
+      . '&tabControl_active_tab=' . urlencode($request->getPost('tabControl_active_tab'))
+  );
   ?>
+
   <div class="ui-alert ui-alert-success">
     <span class="ui-alert-message">
       <?php echo Loc::getMessage('NEFT_SYNONYMS_OPTIONS_SUCCESS') ?>
