@@ -12,7 +12,7 @@ class SearchTitleExtender
   /**
    * @link https://burlaka.studio/lab/search_taged_by_reference/
    */
-  public static function OnAfterIndexAdd($searchContentId, &$arFields)
+  public static function OnAfterIndexAdd($searchContentId, $arFields)
   {
     $module_id = 'neft.synonyms';
     $targetIblocks = explode(',', Option::get($module_id, "indexed_iblocks"));
@@ -30,9 +30,6 @@ class SearchTitleExtender
 
     $wordsObj = new WordProcessing();
     $additionalWords = $wordsObj->expandWords($arFields["TITLE"], false, true);
-
-    // AddMessage2Log($arFields["TITLE"], "neft_synonyms", 0);
-    // AddMessage2Log($additionalWords, "neft_synonyms", 0);
 
     if (!empty($additionalWords)) {
       \CSearch::IndexTitle(
