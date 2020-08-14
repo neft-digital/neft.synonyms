@@ -59,7 +59,9 @@ gulp.task('copyToEncode', function() {
 });
 
 gulp.task('encode', function() {
-  return gulp.src(config.encoded + config.encodeMask)
+  return gulp.src(config.encoded + config.encodeMask, {
+    dot: true
+  })
     .pipe(plugins.iconv({
       decoding: 'utf8',
       encoding: 'win1251'
@@ -77,7 +79,9 @@ gulp.task('copyEncoded', function() {
 });
 
 gulp.task('decode', function() {
-  return gulp.src(config.decoded + config.encodeMask)
+  return gulp.src(config.decoded + config.encodeMask, {
+    dot: true
+  })
     .pipe(plugins.iconv({
       decoding: 'win1251',
       encoding: 'utf8'
@@ -88,7 +92,9 @@ gulp.task('decode', function() {
 });
 
 gulp.task('compare', function() {
-  return gulp.src(config.decoded + config.encodeMask)
+  return gulp.src(config.decoded + config.encodeMask, {
+    dot: true
+  })
     .pipe(plugins.diff(config.dist))
     .pipe(plugins.diff.reporter({
       fail: true
@@ -103,11 +109,25 @@ gulp.task('copyLast', function() {
 });
 
 gulp.task('archive', function() {
-  return gulp.src(config.last + '/**/*', {
+  return gulp.src(config.last + '**/**/*', {
     dot: true
   })
     .pipe(plugins.zip('.last_version.zip'))
     .pipe(gulp.dest(config.build));
+});
+
+gulp.task('phpunit', function() {
+  return gulp.src(config.decoded + '/phpunit.xml')
+    .pipe(plugins.phpunit('phpunit', {
+      debug: false
+    }));
+});
+
+gulp.task('phpunitEncoded', function() {
+  return gulp.src(config.encoded + '/phpunit.xml')
+    .pipe(plugins.phpunit('phpunit', {
+      debug: false
+    }));
 });
 
 gulp.task('default',
@@ -121,6 +141,7 @@ gulp.task('default',
     'decode',
     'compare',
     'copyLast',
-    'archive'
+    'archive',
+    'phpunit',
   )
 );
