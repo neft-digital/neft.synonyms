@@ -187,8 +187,8 @@ class WordProcessing
         $wordsString .= ' ' . strip_tags($item['DETAIL_TEXT']);
       }
       $wordsString = trim(strtolower($wordsString));
-      $wordsString = preg_replace('/[^ a-zа-яё]/ui', ' ', $wordsString);
-      $wordsString = preg_replace('|[\s]+|s', ' ', $wordsString);
+      $wordsString = preg_replace('/[^\p{Cyrillic}\p{Latin}\s]/u', ' ', $wordsString); // Убирает все кроме букв
+      $wordsString = preg_replace('|[\s]+|s', ' ', $wordsString); // Убирает двойные пробелы
       $wordsArray = array_unique(
           explode(' ', $wordsString)
       );
